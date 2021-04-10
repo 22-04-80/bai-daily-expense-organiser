@@ -1,12 +1,35 @@
 <template>
-  <h1>Daily expense organiser</h1>
-  <div id="nav">
-    <router-link to="/groceries">Groceries</router-link> |
-    <router-link to="/products">Products</router-link> |
-    <router-link to="/categories">Categories</router-link> |
-    <router-link to="/dashboard">Dashboard</router-link>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2 bg-light vh-100">
+        <h5>Daily expense organiser</h5>
+        <hr />
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <router-link class="nav-link" to="/groceries"
+              >Groceries</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/products">Products</router-link>
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/categories"
+              >Categories</router-link
+            >
+          </li>
+          <li class="nav-item">
+            <router-link class="nav-link" to="/dashboard"
+              >Dashboard</router-link
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="col-sm-10">
+        <router-view />
+      </div>
+    </div>
   </div>
-  <router-view />
 </template>
 
 <script>

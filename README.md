@@ -24,5 +24,8 @@ npm run lint
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
 ## Deployment
-Application is deployed to [Netlify](https://wonderful-tereshkova-73edf9.netlify.app/).
-App will is rebuilt on every commit to branch master.
+[![Netlify Status](https://api.netlify.com/api/v1/badges/49371780-f96f-4e2f-9d35-8e98a1991deb/deploy-status)](https://app.netlify.com/sites/wonderful-tereshkova-73edf9/deploys)
+
+Application is deployed to Netlify and is available at https://wonderful-tereshkova-73edf9.netlify.app/).
+
+App will is rebuilt on every commit to branch prod instead of main branch master to reduce number Netlify builds.

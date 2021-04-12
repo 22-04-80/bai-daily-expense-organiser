@@ -2,12 +2,8 @@ const URL = 'https://my.api.mockaroo.com';
 const API_KEY = process.env.VUE_APP_MOCKAROO_API_KEY;
 
 async function getCategories() {
-	let response = makeRequest('/categories', 'GET').then(
-		data => {
-			console.log(data)
-		}
-	)
-	console.log('asf', response)
+	let response = makeRequest('/categories', 'GET')
+	return await response
 }
 
 async function getProducts() {
@@ -30,16 +26,19 @@ async function postShoppingList(requestBody) {
 	console.log(requestBody)
 }
 
-async function makeRequest(endpoint, method, data={}) {
+async function makeRequest(endpoint, method, dataToSend={}) {
 	let url = URL + endpoint
-	const response = await fetch(url, {
+	let data = {
 		method: method,
 		headers: {
 			'Content-Type': 'application/json',
 			'X-API-Key': API_KEY
 		},
-		body: JSON.stringify(data)
-	})
+	}
+	if (method != 'GET') {
+		data.data = dataToSend
+	}
+	const response = await fetch(url, data)
 
 	return response.json()
 }

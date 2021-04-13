@@ -4,52 +4,52 @@ export function getProducts() {
 		{
 			"name": "Wine - Red, Pelee Island Merlot",
 			"price": 15.72,
-			"category": "alcohol"
+			"category": "alcohol",
 		},
 		{
 			"name": "Cod - Fillets",
 			"price": 2.49,
-			"category": "fish"
+			"category": "fish",
 		},
 		{
 			"name": "Tea - Darjeeling, Azzura",
 			"price": 8.56,
-			"category": "drink"
+			"category": "drink",
 		},
 		{
 			"name": "Wine - Bourgogne 2002, La",
 			"price": 11.89,
-			"category": "alcohol"
+			"category": "alcohol",
 		},
 		{
 			"name": "Grenadine",
 			"price": 7.55,
-			"category": "syrup"
+			"category": "syrup",
 		},
 		{
 			"name": "Wine - Tio Pepe Sherry Fino",
 			"price": 2.37,
-			"category": "alcohol"
+			"category": "alcohol",
 		},
 		{
 			"name": "Wine - Cotes Du Rhone",
 			"price": 5.9,
-			"category": "alcohol"
+			"category": "alcohol",
 		},
 		{
 			"name": "Cheese - Mascarpone",
 			"price": 13.66,
-			"category": "dairy"
+			"category": "dairy",
 		},
 		{
 			"name": "Seaweed Green Sheets",
 			"price": 15.08,
-			"category": "vegetables"
+			"category": "vegetables",
 		},
 		{
 			"name": "Edible Flower",
 			"price": 6.31,
-			"category": "fish"
-		}
+			"category": "fish",
+		},
 	]);
 }

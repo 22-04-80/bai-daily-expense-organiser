@@ -6,8 +6,8 @@
         <h1>Products</h1>
       </div>
       <div class="settings">
-        <div class="filter" @click="filter">filter</div>
-        <div class="sort" @click="sort">sort</div>
+        <button v-bind:class="filterApplied ? 'active' : ''" @click="filter">filter</button>
+        <button v-bind:class="sortType === 'DSC' ? 'active' : ''" @click="sort">sort</button>
       </div>
     </div>
     <div class="product-list">
@@ -17,17 +17,22 @@
           v-bind:product="product"
       />
     </div>
+    <NewProductButton/>
   </div>
 </template>
 
 <script>
 import {getProducts} from "./getProducts";
+import NewProductButton from "./NewProductButton";
 import ProductTile from './ProductTile';
+import {sortByPrice} from "./sortByPrice";
+import {SORT_TYPE} from "./sortType";
 
 export default {
   name: "Products",
   components: {
     ProductTile,
+    NewProductButton,
   },
   data: function () {
     return ({
@@ -35,7 +40,7 @@ export default {
       error: null,
       allProducts: [],
       products: [],
-      sortType: "",
+      sortType: SORT_TYPE.NONE,
       filterApplied: false,
     });
   },
@@ -43,33 +48,22 @@ export default {
     filter: function () {
       if (this.filterApplied) {
         this.products = [...this.allProducts];
+        sortByPrice(this.products, this.sortType);
         this.filterApplied = false;
       }
       else {
-        this.products = this.products.filter((prodcut => prodcut.category === "fish"));
+        this.products = this.products.filter((product => product.category === "fish"));
         this.filterApplied = true;
       }
     },
     sort: function () {
-      if (!this.sortType) {
-        this.products.sort((product1, product2) => {
-          if (product1.price > product2.price) return 1;
-          if (product1.price < product2.price) return -1;
-          if (product1.price === product2.price) return 0;
-        });
-        this.sortType = "ASC";
+      if (!this.sortType || this.sortType === "DSC") {
+        sortByPrice(this.products, SORT_TYPE.ASCENDING);
+        this.sortType = SORT_TYPE.ASCENDING;
       }
-      else if (this.sortType === "ASC") {
-        this.products.sort((product1, product2) => {
-          if (product1.price > product2.price) return -1;
-          if (product1.price < product2.price) return 1;
-          if (product1.price === product2.price) return 0;
-        });
-        this.sortType = "DSC";
-      }
-      else if (this.sortType === "DSC") {
-        this.products = [...this.allProducts];
-        this.sortType = "";
+      else {
+        sortByPrice(this.products, SORT_TYPE.DESCENDING);
+        this.sortType = SORT_TYPE.DESCENDING;
       }
     },
   },
@@ -101,14 +95,16 @@ export default {
   display: flex;
 }
 
-.filter, .sort {
-  padding: 16px;
+button {
   transition: 0.2s color;
 }
 
-.filter:hover, .sort:hover {
+button:hover {
   color: orange;
-  cursor: pointer;
+}
+
+button.active {
+  color: orange;
 }
 
 .product-list {

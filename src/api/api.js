@@ -7,23 +7,30 @@ async function getCategories() {
 }
 
 async function getProducts() {
-	
+	let response = makeRequest('/products', 'GET')
+	return await response
 }
 
 async function getShops() {
-	
+	let response = makeRequest('/shops', 'GET')
+	return await response
 }
 
-async function getShoppingList() {
-	
+async function getShoppingLists() {
+	let response = makeRequest('/shopping_lists', 'GET')
+	return await response
 }
 
 async function postProduct(requestBody) {
+	let response = makeRequest('/product', 'POST', requestBody)
 	console.log(requestBody)
+	return await response
 }
 
 async function postShoppingList(requestBody) {
+	let response = makeRequest('/shopping_list', 'POST', requestBody)
 	console.log(requestBody)
+	return await response
 }
 
 async function makeRequest(endpoint, method, dataToSend={}) {
@@ -43,31 +50,12 @@ async function makeRequest(endpoint, method, dataToSend={}) {
 	return response.json()
 }
 
-// fetch https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-// Using fetch https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
-// Jak uda sie pobrac dane, to trzeba pamietac o przeparsowaniu ich na jsona,
-// powinno o tym byc pod ktoryms z tych linkow
-// Promise https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-// Trzeba pamietac o dodaniu lokalnie API KEY https://github.com/22-04-80/bai-daily-expense-organiser/wiki/Klucz-API-Mockaroo
-
-// TODO wykorzystac fetch do zrobienia zapytania do API mockaroo uzywajac API i API_KEY
-// function performRequest(route, options) {
-// 	console.log(route, options, URL, API_KEY)
-// 	return Promise.resolve([{name: 'a', category: 'cat', price: 1}]); // placeholder
-// }
-
-// function getProducts() {
-// 	// TODO przekazac do perform request odpowiednie parametry w taki sposob, zeby wykorzystac sciezke GET /"products" opisana przez Marcina
-// 	return performRequest("/products", {method: 'GET'});
-// }
-
-// TODO zaimplementowac i wyeksportowac funkcje wykorzystujace pozostale sciezki API
 
 export const api = {
 	getCategories,
 	getProducts,
 	getShops,
-	getShoppingList,
+	getShoppingLists,
 	postProduct,
 	postShoppingList,
 };

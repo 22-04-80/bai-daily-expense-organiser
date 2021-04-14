@@ -10,19 +10,32 @@
         <button v-bind:class="sortType === 'DSC' ? 'active' : ''" @click="sort">sort</button>
       </div>
     </div>
-    <div class="product-list">
+    <div v-if="loading">
+      <h1>
+        Loading...
+      </h1>
+    </div>
+    <div v-if="!loading && products.length > 0" class="product-list">
       <ProductTile
           v-for="product in products"
           v-bind:key="product.name"
           v-bind:product="product"
       />
+      <NewProductButton/>
     </div>
-    <NewProductButton/>
+    <div v-if="error">
+      <p>
+        Something went wrong when loading products
+      </p>
+      <p>
+        Please try again later
+      </p>
+    </div>
   </div>
 </template>
 
 <script>
-import {getProducts} from "./getProducts";
+import {api} from "../../api/api";
 import NewProductButton from "./NewProductButton";
 import ProductTile from './ProductTile';
 import {sortByPrice} from "./sortByPrice";
@@ -71,8 +84,8 @@ export default {
     this.loading = true;
     this.error = null;
     try {
-      this.allProducts = await getProducts();
-      this.products = await getProducts();
+      this.allProducts = await api.getProducts();
+      this.products = await api.getProducts();
       this.loading = false;
     } catch (error) {
       this.loading = false;

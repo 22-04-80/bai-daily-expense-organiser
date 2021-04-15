@@ -12,7 +12,9 @@
           :grocery="grocery"
       />
     </div>
-    <NewGroceryListButton/>
+    <router-link class="nav-link" to="/new-grocery-list">
+      <NewGroceryListButton :text="buttonText" class="newGroceryListButton"/>
+    </router-link>
   </div>
 </template>
 
@@ -32,6 +34,7 @@ export default {
       loading: false,
       error: null,
       allGroceries: [],
+      buttonText: "Add new list"
     });
   },
   mounted: async function () {
@@ -48,6 +51,8 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.newGroceryListButton {
+  margin-right: 40%;
+}
 </style>

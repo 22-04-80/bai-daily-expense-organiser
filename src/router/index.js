@@ -1,7 +1,7 @@
 import HelloWorld from '../components/HelloWorld.vue';
-import Groceries from '../components//Groceries/Groceries.vue';
-import NewGroceryList from '../components//Groceries/NewGroceryList.vue';
-import Products from '../components/Products.vue';
+import Groceries from '../components/Groceries/Groceries.vue';
+import NewGroceryList from '../components/Groceries/NewGroceryList.vue';
+import Products from '../components/Products/Products.vue';
 import Categories from '../components/Categories.vue';
 import Dashboard from '../components/Dashboard.vue';
 import {createWebHistory, createRouter} from 'vue-router';

@@ -34,7 +34,7 @@
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
-import Groceries from "./components/Groceries.vue";
+import Groceries from "./components/Groceries/Groceries.vue";
 import Products from "./components/Products/Products.vue";
 import Categories from "./components/Categories.vue";
 import Dashboard from "./components/Dashboard.vue";

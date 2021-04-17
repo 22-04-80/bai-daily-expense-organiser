@@ -71,8 +71,13 @@ export default {
   },
   methods: {
     addList() {
-      let d = new Date(this.date).getTime()
-      console.log(d)
+      let created_at = Math.round(new Date(this.date).getTime()/1000)
+      let dataToSend = {
+        "list_name": this.name,
+        "created_at": created_at,
+        "products": this.selectedProducts
+      }
+      api.postShoppingList(dataToSend)
     },
     idexOf(prodName) {
       for (let i=0; i<this.selectedProducts.length; i++) {

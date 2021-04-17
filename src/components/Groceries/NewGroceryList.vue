@@ -11,28 +11,29 @@
       </div>
       <div>
         <label for="products">Select bought product:</label>
-        <select class="form-select" v-model="products" id="products" @change="selectProd($event)">
-            <option disabled value="">Select product:</option>
-            <option v-for="product in allProducts" :key="product.name">{{product.name}}</option>
+        <select v-model="products" id="products">
+            <option disabled value="Select product:">Select product:</option>
+            <option @click="selectProd(product)" v-for="product in allProducts" :key="product" v-bind="product">{{product.name}}</option>
         </select>
         <div>
-          <p>Selected products:</p>
+          <p v-if="selectedProducts.length">Selected products:</p>
           <ul>
-          <li v-for="product in selectedProducts" :key="product"> 
-            <span>{{ product.name }} - {{ product.price }}zł</span>
-            <span>
-              <div>
-                <input type="number" v-model="product.quantity">
-              </div>
-            </span>
-          </li>
-        </ul>
+            <li v-for="product in selectedProducts" :key="product"> 
+              <span>{{ product.name }} - {{ product.price }}zł</span>
+              <span>
+                <div>
+                  <input type="number" v-model="product.quantity" @change="isValid(product)">
+                  <button @click="removeProd($event, product)">X</button>
+                </div>
+              </span>
+            </li>
+            </ul>
         </div>
       </div>
 
     </form>
     <router-link to="/groceries">
-        <NewGroceryListButton class="add" @click="addList()" :text="addListButtonText"/>
+      <NewGroceryListButton :disabled="!isFormValid" class="add" @click="addList()" :text="addListButtonText"/>
     </router-link>
     <router-link to="/groceries">
       <NewGroceryListButton class="cancel" :text="cancelListButtonText"/>
@@ -53,20 +54,53 @@ export default {
       return {
           addListButtonText: "Add",
           cancelListButtonText: "Cancel",
+          products: [],
           allProducts: [],
           selectedProducts: [],
+          name: '',
+          date: ''
       }
+  },
+  computed: {
+    isFormValid() {
+      if (this.name !== "" && this.date !== '' && this.selectedProducts.length > 0) {
+        return true
+      }
+      return false
+    }
   },
   methods: {
     addList() {
-      console.log(this.name)
-      console.log(this.date)
       let d = new Date(this.date).getTime()
       console.log(d)
     },
-    selectProd(event) {
-      console.log(event.target.value)
-      this.selectedProducts.push(event.target.value)
+    idexOf(prodName) {
+      for (let i=0; i<this.selectedProducts.length; i++) {
+        if (prodName === this.selectedProducts[i].name) {
+          return i
+        }
+      }
+      return null
+    },
+    selectProd(prod) {
+      let index = this.idexOf(prod.name)
+      if (index !== null) {
+        this.selectedProducts[index].quantity++
+      } else {
+        prod.quantity = 1
+        this.selectedProducts.push(prod)
+      }
+    },
+    isValid(prod) {
+      if (prod.quantity <= 0) {
+        let index = this.idexOf(prod.name)
+        this.selectedProducts.splice(index, 1)
+      }
+    },
+    removeProd(event, prod) {
+      event.preventDefault()
+      let index = this.idexOf(prod.name)
+      this.selectedProducts.splice(index, 1)
     }
   },
   mounted: async function () {

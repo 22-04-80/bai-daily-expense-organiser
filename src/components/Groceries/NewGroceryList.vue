@@ -11,9 +11,9 @@
       </div>
       <div>
         <label for="products">Select bought product:</label>
-        <select v-model="products" id="products">
+        <select @click="selectProd($event)" v-model="products" id="products">
             <option disabled value="Select product:">Select product:</option>
-            <option @click="selectProd(product)" v-for="product in allProducts" :key="product" v-bind="product">{{product.name}}</option>
+            <option v-for="product in allProducts" :key="product" v-bind="product">{{product.name}}</option>
         </select>
         <div>
           <p v-if="selectedProducts.length">Selected products:</p>
@@ -79,16 +79,17 @@ export default {
       }
       api.postShoppingList(dataToSend)
     },
-    idexOf(prodName) {
-      for (let i=0; i<this.selectedProducts.length; i++) {
-        if (prodName === this.selectedProducts[i].name) {
+    idexOf(prodName, list) {
+      for (let i=0; i<list.length; i++) {
+        if (prodName === list[i].name) {
           return i
         }
       }
       return null
     },
-    selectProd(prod) {
-      let index = this.idexOf(prod.name)
+    selectProd(event) {
+      let prod = this.allProducts[this.idexOf(event.target.value, this.allProducts)]
+      let index = this.idexOf(prod.name, this.selectedProducts)
       if (index !== null) {
         this.selectedProducts[index].quantity++
       } else {
@@ -98,13 +99,13 @@ export default {
     },
     isValid(prod) {
       if (prod.quantity <= 0) {
-        let index = this.idexOf(prod.name)
+        let index = this.idexOf(prod.name, this.selectedProducts)
         this.selectedProducts.splice(index, 1)
       }
     },
     removeProd(event, prod) {
       event.preventDefault()
-      let index = this.idexOf(prod.name)
+      let index = this.idexOf(prod.name, this.selectedProducts)
       this.selectedProducts.splice(index, 1)
     }
   },

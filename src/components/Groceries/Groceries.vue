@@ -6,12 +6,15 @@
       </div>
     </div>
     <hr />
-    <div class="groceries-list">
+    <div v-if="!loading" class="groceries-list">
       <GroceryList
-          v-for="grocery in elementsToDisplay"
+          v-for="grocery in sortGroceries()"
           v-bind:key="grocery.list_name"
           :grocery="grocery"
       />
+    </div>
+    <div v-else>
+      <h1>Loading...</h1>
     </div>
     <router-link class="nav-link" to="/new-grocery-list">
       <FloatingActionButton text="Add new list"/>
@@ -35,17 +38,11 @@ export default {
       loading: false,
       error: null,
       allGroceries: [],
-      elementsToDisplay: []
     });
   },
   methods: {
-    modifyLists() {
-      if (api.mockedShoppingLists.length > 0) {
-        this.elementsToDisplay =  this.allGroceries.concat(api.mockedShoppingLists)
-      } else {
-        this.elementsToDisplay =  this.allGroceries
-      }
-      this.elementsToDisplay.sort((a, b) => (a.created_at != b.created_at) ? a.created_at - b.created_at: a.created_at - b.created_at+1)
+    sortGroceries() {
+      return this.allGroceries.sort((a, b) => (a.created_at != b.created_at) ? a.created_at - b.created_at: a.created_at - b.created_at+1)
     }
   },
   mounted: async function () {
@@ -54,7 +51,6 @@ export default {
     try {
       this.allGroceries = await api.getShoppingLists();
       this.loading = false;
-      this.modifyLists()
     } catch (error) {
       this.loading = false;
       this.error = error;

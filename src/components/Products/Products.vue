@@ -12,9 +12,7 @@
     </div>
     <hr />
     <div v-if="loading">
-      <h1>
-        Loading...
-      </h1>
+      <h1>Loading...</h1>
     </div>
     <div v-if="!loading && products.length > 0" class="product-list">
       <ProductTile
@@ -26,6 +24,9 @@
       <router-link to="/new-product">
         <FloatingActionButton text='Add'/>
       </router-link>
+    </div>
+    <div v-if="!loading && products.length === 0">
+      <h1>No products</h1>
     </div>
     <div v-if="error">
       <p>

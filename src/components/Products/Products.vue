@@ -21,7 +21,9 @@
           v-bind:key="product.name"
           v-bind:product="product"
       />
-      <NewProductButton/>
+      <router-link to="/new-product">
+        <NewProductButton/>
+      </router-link>
     </div>
     <div v-if="error">
       <p>

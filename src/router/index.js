@@ -1,6 +1,7 @@
 import HelloWorld from '../components/HelloWorld.vue';
 import Groceries from '../components/Groceries/Groceries.vue';
 import NewGroceryList from '../components/Groceries/NewGroceryList.vue';
+import NewProduct from "../components/Products/NewProduct";
 import Products from '../components/Products/Products.vue';
 import Categories from '../components/Categories.vue';
 import Dashboard from '../components/Dashboard.vue';
@@ -26,6 +27,11 @@ const routes = [
 		path: '/products',
 		name: 'Products',
 		component: Products
+	},
+	{
+		path: '/new-product',
+		name: 'NewProduct',
+		component: NewProduct
 	},
 	{
 		path: '/categories',

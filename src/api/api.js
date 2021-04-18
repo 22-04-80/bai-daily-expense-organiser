@@ -1,6 +1,8 @@
 const URL = 'https://my.api.mockaroo.com';
 const API_KEY = process.env.VUE_APP_MOCKAROO_API_KEY;
 
+let mockedShoppingLists = []
+
 async function getCategories() {
 	let response = makeRequest('/categories', 'GET')
 	return await response
@@ -23,13 +25,12 @@ async function getShoppingLists() {
 
 async function postProduct(requestBody) {
 	let response = makeRequest('/product', 'POST', requestBody)
-	console.log(requestBody)
 	return await response
 }
 
 async function postShoppingList(requestBody) {
 	let response = makeRequest('/shopping_list', 'POST', requestBody)
-	console.log(requestBody)
+	mockedShoppingLists.push(requestBody)
 	return await response
 }
 
@@ -58,4 +59,5 @@ export const api = {
 	getShoppingLists,
 	postProduct,
 	postShoppingList,
+	mockedShoppingLists
 };

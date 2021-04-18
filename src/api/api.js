@@ -19,8 +19,8 @@ async function getShops() {
 }
 
 async function getShoppingLists() {
-	let response = makeRequest('/shopping_lists', 'GET')
-	return await response
+	let response = await makeRequest('/shopping_lists', 'GET')
+	return response.concat(mockedShoppingLists)
 }
 
 async function postProduct(requestBody) {

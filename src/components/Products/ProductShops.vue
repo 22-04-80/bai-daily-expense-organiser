@@ -40,12 +40,13 @@ export default {
   width: 240px;
   max-height: 240px;
   overflow: auto;
-  background-color: black;
-  color: #fff;
+  background-color: #f8f9fa;
+  color: #2c3e50;
   padding: 4px;
-  border-radius: 4px;
+  border-radius: 8px;
   opacity: 0;
   font-size: 0.8rem;
+  box-shadow: 2px 2px 4px 4px rgba(0, 0, 0, 0.2);
 
   position: absolute;
   z-index: 1;

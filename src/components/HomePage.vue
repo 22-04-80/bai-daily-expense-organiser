@@ -3,9 +3,9 @@
     <div class="jumbotron">
       <h1 class="display-4">Welcome to Daily expense organiser!</h1>
       <p class="lead">This is a simple daily expense organiser to help you keep an eye on your expenses.</p>
-      <p class="lead">
-          <a class="btn btn-primary btn-lg" href="/groceries" role="button">Start now!</a>
-      </p>
+      <router-link class="nav-link" to="/groceries">
+        <a class="btn btn-primary btn-lg" role="button">Start now!</a>
+      </router-link>
     </div>
   </div>
 </template>

@@ -3,7 +3,7 @@ import Groceries from '../components/Groceries/Groceries.vue';
 import NewGroceryList from '../components/Groceries/NewGroceryList.vue';
 import NewProduct from "../components/Products/NewProduct";
 import Products from '../components/Products/Products.vue';
-import Categories from '../components/Categories.vue';
+import Categories from '../components/Categories/Categories.vue';
 import Dashboard from '../components/Dashboard/Dashboard.vue';
 import {createWebHistory, createRouter} from 'vue-router';
 

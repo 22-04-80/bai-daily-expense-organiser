@@ -3,22 +3,22 @@
     <form class="col-sm-6 offset-sm-3">
       <div class="input-group mb-3">
         <span class="input-group-text">List name</span>
-        <input class="form-control" type="text" v-model="name">
+        <input class="form-control" type="text" v-model="listToAdd.name">
       </div>
       <div class="input-group mb-3">
         <span class="input-group-text">Date</span>
-        <input class="form-control" type="date" v-model="date">
+        <input class="form-control" type="date" v-model="listToAdd.date">
       </div>
-      <div class="mb-3">
+      <div v-if="!loading" class="mb-3">
         <h3>Select bought product</h3>
-        <select class="form-select" @click="selectProd($event)" v-model="products">
+        <select class="form-select" @click="selectProd()" v-model="lastSelectedProductName">
             <option disabled value="">Select product</option>
-            <option v-for="product in allProducts" :key="product" v-bind="product">{{product.name}}</option>
+            <option v-for="product in allProducts" :key="product">{{product.name}}</option>
         </select>
         <hr>
         <div class="selected-products">
-          <h3 v-if="selectedProducts.length">Selected products</h3>
-          <div v-for="product in selectedProducts" :key="product">
+          <h3 v-if="listToAdd.selectedProducts.length">Selected products</h3>
+          <div v-for="product in listToAdd.selectedProducts" :key="product">
             <div class="input-group mb-3">
               <span class="input-group-text">{{ product.name }} - {{ product.price }}zł</span>
               <input type="number" class="form-control" aria-describedby="button-addon2" v-model="product.quantity" @change="isValid(product)" />
@@ -26,6 +26,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div v-else>
+        Loading...
       </div>
       <div class="button-container">
         <router-link to="/groceries">
@@ -45,17 +48,19 @@ export default {
   name: "NewGroceryList",
   data: function() {
       return {
-          addListButtonText: "Add",
-          products: "",
+          loading: true,
           allProducts: [],
-          selectedProducts: [],
-          name: '',
-          date: ''
+          listToAdd: {
+            name: '',
+            date: '',
+            selectedProducts: [],
+          },
+          lastSelectedProductName: ""
       }
   },
   computed: {
     isFormValid() {
-      if (this.name !== "" && this.date !== '' && this.selectedProducts.length > 0) {
+      if (this.listToAdd.name !== "" && this.listToAdd.date !== '' && this.listToAdd.selectedProducts.length > 0) {
         return true
       }
       return false
@@ -63,11 +68,11 @@ export default {
   },
   methods: {
     async addList() {
-      let created_at = Math.round(new Date(this.date).getTime()/1000)
+      let created_at = Math.round(new Date(this.listToAdd.date).getTime()/1000)
       let dataToSend = {
-        "list_name": this.name,
+        "list_name": this.listToAdd.name,
         "created_at": created_at,
-        "products": this.selectedProducts
+        "products": this.listToAdd.selectedProducts
       }
       api.postShoppingList(dataToSend)
       await this.$router.push('/groceries');
@@ -80,26 +85,26 @@ export default {
       }
       return null
     },
-    selectProd(event) {
-      let prod = this.allProducts[this.idexOf(event.target.value, this.allProducts)]
-      let index = this.idexOf(prod.name, this.selectedProducts)
+    selectProd() {
+      let prod = this.allProducts[this.idexOf(this.lastSelectedProductName, this.allProducts)]
+      let index = this.idexOf(prod.name, this.listToAdd.selectedProducts)
       if (index !== null) {
-        this.selectedProducts[index].quantity++
+        this.listToAdd.selectedProducts[index].quantity++
       } else {
         prod.quantity = 1
-        this.selectedProducts.push(prod)
+        this.listToAdd.selectedProducts.push(prod)
       }
     },
     isValid(prod) {
       if (prod.quantity <= 0) {
-        let index = this.idexOf(prod.name, this.selectedProducts)
-        this.selectedProducts.splice(index, 1)
+        let index = this.idexOf(prod.name, this.listToAdd.selectedProducts)
+        this.listToAdd.selectedProducts.splice(index, 1)
       }
     },
     removeProd(event, prod) {
       event.preventDefault()
-      let index = this.idexOf(prod.name, this.selectedProducts)
-      this.selectedProducts.splice(index, 1)
+      let index = this.idexOf(prod.name, this.listToAdd.selectedProducts)
+      this.listToAdd.selectedProducts.splice(index, 1)
     }
   },
   mounted: async function () {

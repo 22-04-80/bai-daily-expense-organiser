@@ -6,7 +6,7 @@
         <h1>Products</h1>
       </div>
       <div class="settings">
-        <button v-bind:class="filterApplied ? 'active' : ''" @click="filter">filter</button>
+        <button v-bind:class="filterBy ? 'active' : ''" @click="filter">filter</button>
         <button v-bind:class="sortType === 'DSC' ? 'active' : ''" @click="sort">sort</button>
       </div>
     </div>
@@ -41,6 +41,7 @@
 import {api} from "../../api/api";
 import NewProductButton from "./NewProductButton";
 import ProductTile from './ProductTile';
+import {filterByCategory} from "./filterByCategory";
 import {sortByPrice} from "./sortByPrice";
 import {SORT_TYPE} from "./sortType";
 
@@ -57,7 +58,7 @@ export default {
       allProducts: [],
       products: [],
       sortType: SORT_TYPE.NONE,
-      filterApplied: false,
+      filterBy: '',
 
       getShopsLoading: false,
       getShopsError: null,
@@ -66,14 +67,14 @@ export default {
   },
   methods: {
     filter: function () {
-      if (this.filterApplied) {
+      if (this.filterBy) {
         this.products = [...this.allProducts];
         sortByPrice(this.products, this.sortType);
-        this.filterApplied = false;
+        this.filterBy = '';
       }
       else {
-        this.products = this.products.filter((product => product.category === "fish"));
-        this.filterApplied = true;
+        this.filterBy = 'fish';
+        this.products = this.products.filter((product => product.category === this.filterBy));
       }
     },
     sort: function () {
@@ -116,6 +117,10 @@ export default {
   mounted: async function () {
     await this.getProducts();
     await this.getShops();
+    if (this.$route.query.category) {
+      this.filterBy = this.$route.query.category;
+      this.products = filterByCategory(this.products, this.filterBy);
+    }
   },
 };
 </script>

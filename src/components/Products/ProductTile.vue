@@ -37,7 +37,8 @@ export default {
   width: 30%;
   display: flex;
   padding: 8px;
-  margin: 8px;
+  margin-right: 16px;
+  margin-bottom: 16px;
   text-align: left;
   box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
   font-size: 0.9rem;

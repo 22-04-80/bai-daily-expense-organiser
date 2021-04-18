@@ -39,7 +39,7 @@
 <script>
 import Groceries from "./components/Groceries/Groceries.vue";
 import Products from "./components/Products/Products.vue";
-import Categories from "./components/Categories.vue";
+import Categories from "./components/Categories/Categories.vue";
 import Dashboard from "./components/Dashboard/Dashboard.vue";
 
 export default {
@@ -80,5 +80,4 @@ export default {
 .router-link-active {
   color: rgba(27, 104, 8, 0.89);
 }
-
 </style>

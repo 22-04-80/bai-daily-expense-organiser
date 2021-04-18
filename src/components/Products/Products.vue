@@ -10,6 +10,7 @@
         <button v-bind:class="sortType === 'DSC' ? 'active' : ''" @click="sort">sort</button>
       </div>
     </div>
+    <hr />
     <div v-if="loading">
       <h1>
         Loading...
@@ -23,7 +24,7 @@
           v-bind:shops="getShopsByCategory(product.category)"
       />
       <router-link to="/new-product">
-        <NewProductButton/>
+        <FloatingActionButton text='Add'/>
       </router-link>
     </div>
     <div v-if="error">
@@ -39,7 +40,7 @@
 
 <script>
 import {api} from "../../api/api";
-import NewProductButton from "./NewProductButton";
+import FloatingActionButton from "./../FloatingActionButton";
 import ProductTile from './ProductTile';
 import {filterByCategory} from "./filterByCategory";
 import {sortByPrice} from "./sortByPrice";
@@ -49,7 +50,7 @@ export default {
   name: "Products",
   components: {
     ProductTile,
-    NewProductButton,
+    FloatingActionButton,
   },
   data: function () {
     return ({

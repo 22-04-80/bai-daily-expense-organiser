@@ -41,10 +41,6 @@ export default {
   text-align: left;
 }
 
-.product-image {
-
-}
-
 .product-info {
   display: flex;
   flex-direction: column;

@@ -1,28 +1,30 @@
 <template>
   <div>
     <h1>Add new product</h1>
-    <form>
-      <div>
-        <label for="new-product-name-input">Name</label>
-        <input id="new-product-name-input" type="text" v-model="product.name">
+    <form class="col-sm-6 offset-sm-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Name</span>
+        <input class="form-control" type="text" v-model="product.name">
       </div>
-      <div>
-        <label for="new-product-price-input">Unit price</label>
-        <input id="new-product-price-input" type="number" v-model="product.price">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Unit price</span>
+        <input class="form-control" type="number" v-model="product.price">
       </div>
-      <div v-if="getCategoriesLoading">Loading categories</div>
-      <div v-else>
-        <label for="new-product-category-select">Category</label>
-        <select v-model="product.category" id="new-product-category-select">
+      <div v-if="getCategoriesLoading">Loading...</div>
+      <div class="input-group mb-3" v-else>
+        <span class="input-group-text">Category</span>
+        <select class="form-select" v-model="product.category">
           <option disabled value="">Select category</option>
           <option v-for="category in allCategories" :key="category">{{ category }}</option>
         </select>
       </div>
+      <div class="button-container">
+        <router-link to="/products">
+          <button class="btn btn-secondary btn-lg cancel">Cancel</button>
+        </router-link>
+        <button @click="postProduct" v-bind:disabled="!isFormValid || postProductLoading" class="btn btn-primary btn-lg">Add</button>
+    </div>
     </form>
-    <button @click="postProduct" v-bind:disabled="postProductLoading">Add</button>
-    <router-link to="/products">
-      <button>Cancel</button>
-    </router-link>
   </div>
 </template>
 
@@ -45,6 +47,14 @@ export default {
       postProductError: null,
     };
   },
+  computed: {
+    isFormValid() {
+      if (this.product.name && this.product.price > 0 && this.product.category) {
+        return true
+      }
+      return false
+    }
+  },
   methods: {
     getCategories: async function () {
       this.getCategoriesLoading = true;
@@ -61,7 +71,7 @@ export default {
       this.postProductLoading = true;
       this.postProductError = null;
       try {
-        await api.postProduct(this.product);
+        api.postProduct(this.product);
         this.postProductLoading = false;
         this.postProductError = null;
         await this.$router.push('/products');
@@ -78,5 +88,11 @@ export default {
 </script>
 
 <style scoped>
-
+  .button-container {
+      display: flex;
+      justify-content: flex-end;
+    }
+  .cancel {
+      margin-right: 16px;
+    }
 </style>

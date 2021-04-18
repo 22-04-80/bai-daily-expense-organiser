@@ -1,60 +1,52 @@
 <template>
-  <div>
-    <form>
-      <div>
-        <label for="name">List name</label>
-        <input type="text" v-model="name" id="name">
+  <div class="mt-5">
+    <form class="col-sm-6 offset-sm-3">
+      <div class="input-group mb-3">
+        <span class="input-group-text">List name</span>
+        <input class="form-control" type="text" v-model="name">
       </div>
-      <div>
-        <label for="date">Date</label>
-        <input type="date" v-model="date" id="date">
+      <div class="input-group mb-3">
+        <span class="input-group-text">Date</span>
+        <input class="form-control" type="date" v-model="date">
       </div>
-      <div>
-        <label for="products">Select bought product:</label>
-        <select @click="selectProd($event)" v-model="products" id="products">
-            <option disabled value="Select product:">Select product:</option>
+      <div class="mb-3">
+        <h3>Select bought product</h3>
+        <select class="form-select" @click="selectProd($event)" v-model="products">
+            <option disabled value="">Select product</option>
             <option v-for="product in allProducts" :key="product" v-bind="product">{{product.name}}</option>
         </select>
-        <div>
-          <p v-if="selectedProducts.length">Selected products:</p>
-          <ul>
-            <li v-for="product in selectedProducts" :key="product"> 
-              <span>{{ product.name }} - {{ product.price }}zł</span>
-              <span>
-                <div>
-                  <input type="number" v-model="product.quantity" @change="isValid(product)">
-                  <button @click="removeProd($event, product)">X</button>
-                </div>
-              </span>
-            </li>
-            </ul>
+        <hr>
+        <div class="selected-products">
+          <h3 v-if="selectedProducts.length">Selected products</h3>
+          <div v-for="product in selectedProducts" :key="product">
+            <div class="input-group mb-3">
+              <span class="input-group-text">{{ product.name }} - {{ product.price }}zł</span>
+              <input type="number" class="form-control" aria-describedby="button-addon2" v-model="product.quantity" @change="isValid(product)" />
+              <button @click="removeProd($event, product)" class="btn btn-outline-secondary" type="button" id="button-addon2">X</button>
+            </div>
+          </div>
         </div>
       </div>
+      <div class="button-container">
+        <router-link to="/groceries">
+          <button class="btn btn-secondary btn-lg cancel">Cancel</button>
+        </router-link>
 
+        <button class="btn btn-primary btn-lg" :disabled="!isFormValid" @click="addList()">Add</button>
+      </div>
     </form>
-    <router-link to="/groceries">
-      <NewGroceryListButton :disabled="!isFormValid" class="add" @click="addList()" :text="addListButtonText"/>
-    </router-link>
-    <router-link to="/groceries">
-      <NewGroceryListButton class="cancel" :text="cancelListButtonText"/>
-    </router-link>
   </div>
 </template>
 
 <script>
 import {api} from '../../api/api.js'
-import NewGroceryListButton from "./NewGroceryListButton";
 
 export default {
   name: "NewGroceryList",
-  components: {
-    NewGroceryListButton,
-  },
   data: function() {
       return {
           addListButtonText: "Add",
-          cancelListButtonText: "Cancel",
-          products: [],
+          products: "",
           allProducts: [],
           selectedProducts: [],
           name: '',
@@ -70,7 +62,7 @@ export default {
     }
   },
   methods: {
-    addList() {
+    async addList() {
       let created_at = Math.round(new Date(this.date).getTime()/1000)
       let dataToSend = {
         "list_name": this.name,
@@ -78,6 +70,7 @@ export default {
         "products": this.selectedProducts
       }
       api.postShoppingList(dataToSend)
+      await this.$router.push('/groceries');
     },
     idexOf(prodName, list) {
       for (let i=0; i<list.length; i++) {
@@ -124,10 +117,14 @@ export default {
 </script>
 
 <style scoped>
-    .add {
-    margin-right: 2%;
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
     }
     .cancel {
-    margin-right: 15%;
+      margin-right: 16px;
+    }
+    .selected-products {
+      margin-top: 32px;
     }
 </style>

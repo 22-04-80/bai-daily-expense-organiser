@@ -1,7 +1,9 @@
 <template>
   <h1>Dashboard</h1>
   <hr />
-  <div v-if="loading.shoppingList || loading.products">Loading...</div>
+  <div v-if="loading.shoppingList || loading.products">
+    <h1>Loading...</h1>
+  </div>
   <div class="row" v-if="!loading.shoppingList && !loading.products">
     <div class="col-sm-12 mb-5">
       <LineChart

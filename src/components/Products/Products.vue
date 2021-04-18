@@ -6,10 +6,11 @@
         <h1>Products</h1>
       </div>
       <div class="settings">
-        <button v-bind:class="filterApplied ? 'active' : ''" @click="filter">filter</button>
+        <button v-bind:class="filterBy ? 'active' : ''" @click="filter">filter</button>
         <button v-bind:class="sortType === 'DSC' ? 'active' : ''" @click="sort">sort</button>
       </div>
     </div>
+    <hr />
     <div v-if="loading">
       <h1>
         Loading...
@@ -20,8 +21,11 @@
           v-for="product in products"
           v-bind:key="product.name"
           v-bind:product="product"
+          v-bind:shops="getShopsByCategory(product.category)"
       />
-      <NewProductButton/>
+      <router-link to="/new-product">
+        <FloatingActionButton text='Add'/>
+      </router-link>
     </div>
     <div v-if="error">
       <p>
@@ -36,8 +40,9 @@
 
 <script>
 import {api} from "../../api/api";
-import NewProductButton from "./NewProductButton";
+import FloatingActionButton from "./../FloatingActionButton";
 import ProductTile from './ProductTile';
+import {filterByCategory} from "./filterByCategory";
 import {sortByPrice} from "./sortByPrice";
 import {SORT_TYPE} from "./sortType";
 
@@ -45,7 +50,7 @@ export default {
   name: "Products",
   components: {
     ProductTile,
-    NewProductButton,
+    FloatingActionButton,
   },
   data: function () {
     return ({
@@ -54,19 +59,23 @@ export default {
       allProducts: [],
       products: [],
       sortType: SORT_TYPE.NONE,
-      filterApplied: false,
+      filterBy: '',
+
+      getShopsLoading: false,
+      getShopsError: null,
+      allShops: [],
     });
   },
   methods: {
     filter: function () {
-      if (this.filterApplied) {
+      if (this.filterBy) {
         this.products = [...this.allProducts];
         sortByPrice(this.products, this.sortType);
-        this.filterApplied = false;
+        this.filterBy = '';
       }
       else {
-        this.products = this.products.filter((product => product.category === "fish"));
-        this.filterApplied = true;
+        this.filterBy = 'fish';
+        this.products = this.products.filter((product => product.category === this.filterBy));
       }
     },
     sort: function () {
@@ -79,17 +88,39 @@ export default {
         this.sortType = SORT_TYPE.DESCENDING;
       }
     },
+    getProducts: async function () {
+      this.loading = true;
+      this.error = null;
+      try {
+        this.allProducts = await api.getProducts();
+        this.products = await api.getProducts();
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.error = error;
+      }
+    },
+    getShops: async function () {
+      this.getShopsLoading = true;
+      this.getShopsError = null;
+      try {
+        this.allShops = await api.getShops();
+        this.getShopsLoading = false;
+      } catch (getShopsError) {
+        this.getShopsLoading = false;
+        this.getShopsError = getShopsError;
+      }
+    },
+    getShopsByCategory: function (category) {
+      return this.allShops.filter(shop => shop.category === category);
+    },
   },
   mounted: async function () {
-    this.loading = true;
-    this.error = null;
-    try {
-      this.allProducts = await api.getProducts();
-      this.products = await api.getProducts();
-      this.loading = false;
-    } catch (error) {
-      this.loading = false;
-      this.error = error;
+    await this.getProducts();
+    await this.getShops();
+    if (this.$route.query.category) {
+      this.filterBy = this.$route.query.category;
+      this.products = filterByCategory(this.products, this.filterBy);
     }
   },
 };

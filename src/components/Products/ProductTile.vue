@@ -16,15 +16,19 @@
         <div>
           {{ product.category }}
         </div>
+        <ProductShops v-bind:shops="shops"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import ProductShops from "./ProductShops";
+
 export default {
   name: "ProductTile",
-  props: ["product"],
+  props: ["product", "shops"],
+  components: {ProductShops},
 };
 </script>
 
@@ -35,10 +39,6 @@ export default {
   padding: 8px;
   margin: 8px;
   text-align: left;
-}
-
-.product-image {
-
 }
 
 .product-info {

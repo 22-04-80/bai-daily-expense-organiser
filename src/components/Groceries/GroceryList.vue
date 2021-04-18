@@ -42,7 +42,7 @@ export default {
         let sumForProd = product.quantity * product.price
         sum += sumForProd
       });
-      return sum
+      return sum.toFixed(2)
     }
   },
   methods: {

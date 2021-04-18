@@ -5,15 +5,16 @@
         <h1>Groceries</h1>
       </div>
     </div>
+    <hr />
     <div class="groceries-list">
       <GroceryList
-          v-for="grocery in allGroceries"
+          v-for="grocery in elementsToDisplay"
           v-bind:key="grocery.list_name"
           :grocery="grocery"
       />
     </div>
     <router-link class="nav-link" to="/new-grocery-list">
-      <NewGroceryListButton :text="buttonText" class="newGroceryListButton"/>
+      <FloatingActionButton text="Add new list"/>
     </router-link>
   </div>
 </template>
@@ -21,21 +22,31 @@
 <script>
 import {api} from '../../api/api.js'
 import GroceryList from "./GroceryList";
-import NewGroceryListButton from "./NewGroceryListButton";
+import FloatingActionButton from "./../FloatingActionButton";
 
 export default {
   name: "Groceries",
   components: {
     GroceryList,
-    NewGroceryListButton,
+    FloatingActionButton,
   },
   data: function () {
     return ({
       loading: false,
       error: null,
       allGroceries: [],
-      buttonText: "Add new list"
+      elementsToDisplay: []
     });
+  },
+  methods: {
+    modifyLists() {
+      if (api.mockedShoppingLists.length > 0) {
+        this.elementsToDisplay =  this.allGroceries.concat(api.mockedShoppingLists)
+      } else {
+        this.elementsToDisplay =  this.allGroceries
+      }
+      this.elementsToDisplay.sort((a, b) => (a.created_at != b.created_at) ? a.created_at - b.created_at: a.created_at - b.created_at+1)
+    }
   },
   mounted: async function () {
     this.loading = true;
@@ -43,6 +54,7 @@ export default {
     try {
       this.allGroceries = await api.getShoppingLists();
       this.loading = false;
+      this.modifyLists()
     } catch (error) {
       this.loading = false;
       this.error = error;
@@ -52,7 +64,4 @@ export default {
 </script>
 
 <style scoped>
-.newGroceryListButton {
-  margin-right: 40%;
-}
 </style>

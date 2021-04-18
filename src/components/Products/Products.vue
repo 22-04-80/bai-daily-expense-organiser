@@ -20,6 +20,7 @@
           v-for="product in products"
           v-bind:key="product.name"
           v-bind:product="product"
+          v-bind:shops="getShopsByCategory(product.category)"
       />
       <router-link to="/new-product">
         <NewProductButton/>
@@ -57,6 +58,10 @@ export default {
       products: [],
       sortType: SORT_TYPE.NONE,
       filterApplied: false,
+
+      getShopsLoading: false,
+      getShopsError: null,
+      allShops: [],
     });
   },
   methods: {
@@ -81,18 +86,36 @@ export default {
         this.sortType = SORT_TYPE.DESCENDING;
       }
     },
+    getProducts: async function () {
+      this.loading = true;
+      this.error = null;
+      try {
+        this.allProducts = await api.getProducts();
+        this.products = await api.getProducts();
+        this.loading = false;
+      } catch (error) {
+        this.loading = false;
+        this.error = error;
+      }
+    },
+    getShops: async function () {
+      this.getShopsLoading = true;
+      this.getShopsError = null;
+      try {
+        this.allShops = await api.getShops();
+        this.getShopsLoading = false;
+      } catch (getShopsError) {
+        this.getShopsLoading = false;
+        this.getShopsError = getShopsError;
+      }
+    },
+    getShopsByCategory: function (category) {
+      return this.allShops.filter(shop => shop.category === category);
+    },
   },
   mounted: async function () {
-    this.loading = true;
-    this.error = null;
-    try {
-      this.allProducts = await api.getProducts();
-      this.products = await api.getProducts();
-      this.loading = false;
-    } catch (error) {
-      this.loading = false;
-      this.error = error;
-    }
+    await this.getProducts();
+    await this.getShops();
   },
 };
 </script>

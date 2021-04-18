@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h1>Add new product</h1>
     <form>
       <div>
         <label for="new-product-name-input">Name</label>

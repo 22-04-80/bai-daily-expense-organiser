@@ -1,4 +1,4 @@
-import HelloWorld from '../components/HelloWorld.vue';
+import HomePage from '../components/HomePage.vue';
 import Groceries from '../components/Groceries/Groceries.vue';
 import NewGroceryList from '../components/Groceries/NewGroceryList.vue';
 import NewProduct from "../components/Products/NewProduct";
@@ -9,9 +9,9 @@ import {createWebHistory, createRouter} from 'vue-router';
 
 const routes = [
 	{
-		path: '/helloWorld',
-		name: 'HelloWorld',
-		component: HelloWorld
+		path: '/',
+		name: 'HomePage',
+		component: HomePage
 	},
 	{
 		path: '/groceries',

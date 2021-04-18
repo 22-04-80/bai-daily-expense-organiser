@@ -5,16 +5,16 @@
     </div>
     <div class="product-info">
       <div class="info-top">
-        <div>
+        <div class="name">
           {{ product.name }}
         </div>
-        <div>
-          {{ product.price }}
+        <div class="price">
+          {{ product.price }} zł
         </div>
       </div>
       <div class="info-bottom">
         <div>
-          {{ product.category }}
+          🏷️ {{ product.category }}
         </div>
         <ProductShops v-bind:shops="shops"/>
       </div>
@@ -37,8 +37,19 @@ export default {
   width: 30%;
   display: flex;
   padding: 8px;
-  margin: 8px;
+  margin-right: 16px;
+  margin-bottom: 16px;
   text-align: left;
+  box-shadow: 1px 1px 4px 0 rgba(0, 0, 0, 0.2);
+  font-size: 0.9rem;
+}
+
+.name {
+  font-weight: bold;
+}
+
+.price {
+  font-style: italic;
 }
 
 .product-info {

@@ -1,6 +1,6 @@
-export function filterByCategory(products, category) {
+export function filterByCategory(allProducts, category) {
 	if (!category) {
-		return products;
+		return [...allProducts];
 	}
-	return products.filter((product) => product.category === category);
+	return allProducts.filter((product) => product.category === category);
 }

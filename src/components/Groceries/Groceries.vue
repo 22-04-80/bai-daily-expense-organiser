@@ -6,12 +6,15 @@
       </div>
     </div>
     <hr />
-    <div class="groceries-list">
+    <div v-if="!loading" class="groceries-list">
       <GroceryList
           v-for="grocery in sortGroceries()"
           v-bind:key="grocery.list_name"
           :grocery="grocery"
       />
+    </div>
+    <div v-else>
+      <h1>Loading...</h1>
     </div>
     <router-link class="nav-link" to="/new-grocery-list">
       <FloatingActionButton text="Add new list"/>

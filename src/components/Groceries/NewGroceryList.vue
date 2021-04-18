@@ -9,7 +9,7 @@
         <span class="input-group-text">Date</span>
         <input class="form-control" type="date" v-model="listToAdd.date">
       </div>
-      <div class="mb-3">
+      <div v-if="!loading" class="mb-3">
         <h3>Select bought product</h3>
         <select class="form-select" @click="selectProd()" v-model="lastSelectedProductName">
             <option disabled value="">Select product</option>
@@ -26,6 +26,9 @@
             </div>
           </div>
         </div>
+      </div>
+      <div v-else>
+        Loading...
       </div>
       <div class="button-container">
         <router-link to="/groceries">
@@ -45,6 +48,7 @@ export default {
   name: "NewGroceryList",
   data: function() {
       return {
+          loading: true,
           allProducts: [],
           listToAdd: {
             name: '',

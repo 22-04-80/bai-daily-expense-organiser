@@ -89,9 +89,9 @@ export default {
       this.loading.products = false;
     },
   },
-  mounted: function () {
-    this.getGroceriesHistory();
-    this.getProducts();
+  mounted: async function () {
+    await this.getGroceriesHistory();
+    await this.getProducts();
   },
 };
 </script>

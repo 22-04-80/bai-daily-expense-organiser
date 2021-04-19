@@ -94,6 +94,7 @@ export default {
         prod.quantity = 1
         this.listToAdd.selectedProducts.push(prod)
       }
+      this.lastSelectedProductName = ""
     },
     isValid(prod) {
       if (prod.quantity <= 0) {

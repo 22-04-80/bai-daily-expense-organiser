@@ -153,12 +153,12 @@ export default {
   },
   mounted: async function () {
     await this.getProducts();
-    await this.getShops();
-    await this.getCategories();
     if (this.$route.query.category) {
       this.filterBy = this.$route.query.category;
       this.products = filterByCategory(this.products, this.filterBy);
     }
+    await this.getShops();
+    await this.getCategories();
   },
 };
 </script>
